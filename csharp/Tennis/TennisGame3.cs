@@ -28,7 +28,9 @@ namespace Tennis
 
         private string CurrentScore()
         {
-            return IsADraw() ? _points[_player1Score] + "-All" : _points[_player1Score] + "-" + _points[_player2Score];
+            return IsADraw() ? 
+                _points[_player1Score] + "-All" 
+                : _points[_player1Score] + "-" + _points[_player2Score];
         }
 
         private bool IsADraw()
@@ -39,7 +41,9 @@ namespace Tennis
         private string ExtraTimeScore()
         {
             var score = _player1Score > _player2Score ? _player1Name : _player2Name;
-            return MatchIsOnAdvantage() ? "Advantage " + score : "Win for " + score;
+            return MatchIsOnAdvantage() ? 
+                "Advantage " + score 
+                : "Win for " + score;
         }
 
         private bool MatchIsOnAdvantage()
