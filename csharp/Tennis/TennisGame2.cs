@@ -29,15 +29,10 @@ namespace Tennis
 
         private string GetCurrentScore(string score)
         {
+            var points = new[] { "Love", "Fifteen", "Thirty", "Forty" };
             if (_player1Point == _player2Point && _player1Point < 3)
             {
-                score = _player1Point switch
-                {
-                    0 => "Love",
-                    1 => "Fifteen",
-                    2 => "Thirty",
-                    _ => score
-                };
+                score = points[_player1Point];
                 score += "-All";
             }
 
