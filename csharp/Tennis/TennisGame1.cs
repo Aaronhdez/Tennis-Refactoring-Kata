@@ -2,8 +2,8 @@ namespace Tennis
 {
     public class TennisGame1 : ITennisGame
     {
-        private int m_score1 = 0;
-        private int m_score2 = 0;
+        private int player1Score = 0;
+        private int player2Score = 0;
         private readonly string _player1Name;
         private string _player2Name;
 
@@ -16,9 +16,9 @@ namespace Tennis
         public void WonPoint(string playerName)
         {
             if (IsPlayer1(playerName))
-                m_score1 += 1;
+                player1Score += 1;
             else
-                m_score2 += 1;
+                player2Score += 1;
         }
 
         private bool IsPlayer1(string playerName)
@@ -30,17 +30,17 @@ namespace Tennis
         {
             return BothPlayersAreDraw() ? SetLoveScore() :
                 MatchIsInAdvantagePhase() ? SetAdvantageScore() : 
-                SetNormalScore(string.Empty);
+                GetCurrentScore();
         }
 
         private bool BothPlayersAreDraw()
         {
-            return m_score1 == m_score2;
+            return player1Score == player2Score;
         }
 
         private string SetLoveScore()
         {
-            return m_score1 switch
+            return player1Score switch
             {
                 0 => "Love-All",
                 1 => "Fifteen-All",
@@ -51,12 +51,12 @@ namespace Tennis
 
         private bool MatchIsInAdvantagePhase()
         {
-            return m_score1 >= 4 || m_score2 >= 4;
+            return player1Score >= 4 || player2Score >= 4;
         }
 
         private string SetAdvantageScore()
         {
-            var minusResult = m_score1 - m_score2;
+            var minusResult = player1Score - player2Score;
             return minusResult switch
             {
                 1 => "Advantage player1",
@@ -70,39 +70,27 @@ namespace Tennis
         {
             for (var i = 1; i < 3; i++)
             {
-                score = SetScore(score, i);
+                score = GetCurrentScore();
             }
 
             return score;
         }
 
-        private string SetScore(string score, int i)
+        private string GetCurrentScore()
         {
-            var tempScore = 0;
-            if (i == 1) tempScore = m_score1;
-            else
-            {
-                score += "-";
-                tempScore = m_score2;
-            }
+            return GetScoreFrom(player1Score) +"-"+GetScoreFrom(player2Score);
+        }
 
-            switch (tempScore)
+        private static string GetScoreFrom(int playerScore)
+        {
+            return playerScore switch
             {
-                case 0:
-                    score += "Love";
-                    break;
-                case 1:
-                    score += "Fifteen";
-                    break;
-                case 2:
-                    score += "Thirty";
-                    break;
-                case 3:
-                    score += "Forty";
-                    break;
-            }
-
-            return score;
+                0 => "Love",
+                1 => "Fifteen",
+                2 => "Thirty",
+                3 => "Forty",
+                _ => ""
+            };
         }
     }
 }
