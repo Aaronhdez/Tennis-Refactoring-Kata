@@ -26,7 +26,14 @@ namespace Tennis
             if (IsADraw())
                 return "Deuce";
             score = _player1Score > _player2Score ? _player1Name : _player2Name;
-            return ((_player1Score - _player2Score) * (_player1Score - _player2Score) == 1) ? "Advantage " + score : "Win for " + score;
+            return MatchIsOnAdvantage() ? 
+                "Advantage " + score : 
+                "Win for " + score;
+        }
+
+        private bool MatchIsOnAdvantage()
+        {
+            return (_player1Score - _player2Score) * (_player1Score - _player2Score) == 1;
         }
 
         private bool IsADraw()
