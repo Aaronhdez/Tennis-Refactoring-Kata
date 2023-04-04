@@ -5,7 +5,6 @@ namespace Tennis
         private int _player1Point;
         private int _player2Point;
 
-        private string _player1Result = "";
         private string _player2Result = "";
         private string _player1Name;
         private string _player2Name;
@@ -31,9 +30,7 @@ namespace Tennis
 
         private string GetCurrentScore()
         {
-            _player1Result = _points[_player1Point];
-            _player2Result = _points[_player2Point];
-            return _player1Result + "-" + _player2Result;
+            return _points[_player1Point] + "-" + _points[_player2Point];
         }
 
         private bool IsADraw()
