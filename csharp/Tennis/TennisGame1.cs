@@ -2,10 +2,10 @@ namespace Tennis
 {
     public class TennisGame1 : ITennisGame
     {
-        private int player1Score = 0;
-        private int player2Score = 0;
+        private int _player1Score = 0;
+        private int _player2Score = 0;
         private readonly string _player1Name;
-        private string _player2Name;
+        private readonly string _player2Name;
 
         public TennisGame1(string player1Name, string player2Name)
         {
@@ -16,9 +16,9 @@ namespace Tennis
         public void WonPoint(string playerName)
         {
             if (IsPlayer1(playerName))
-                player1Score += 1;
+                _player1Score += 1;
             else
-                player2Score += 1;
+                _player2Score += 1;
         }
 
         private bool IsPlayer1(string playerName)
@@ -28,19 +28,19 @@ namespace Tennis
 
         public string GetScore()
         {
-            return BothPlayersAreDraw() ? SetLoveScore() :
-                MatchIsInAdvantagePhase() ? SetAdvantageScore() : 
+            return BothPlayersAreDraw() ? GetLoveScore() :
+                MatchIsInAdvantagePhase() ? GetAdvantageScore() : 
                 GetCurrentScore();
         }
 
         private bool BothPlayersAreDraw()
         {
-            return player1Score == player2Score;
+            return _player1Score == _player2Score;
         }
 
-        private string SetLoveScore()
+        private string GetLoveScore()
         {
-            return player1Score switch
+            return _player1Score switch
             {
                 0 => "Love-All",
                 1 => "Fifteen-All",
@@ -51,23 +51,23 @@ namespace Tennis
 
         private bool MatchIsInAdvantagePhase()
         {
-            return player1Score >= 4 || player2Score >= 4;
+            return _player1Score >= 4 || _player2Score >= 4;
         }
 
-        private string SetAdvantageScore()
+        private string GetAdvantageScore()
         {
-            return (player1Score - player2Score) switch
+            return (_player1Score - _player2Score) switch
             {
-                1 => "Advantage player1",
-                -1 => "Advantage player2",
-                >= 2 => "Win for player1",
-                _ => "Win for player2"
+                1 => $"Advantage {_player1Name}",
+                -1 => $"Advantage {_player2Name}",
+                >= 2 => $"Win for {_player1Name}",
+                _ => $"Win for {_player2Name}"
             };
         }
 
         private string GetCurrentScore()
         {
-            return GetFormattedScoreFrom(player1Score) +"-"+GetFormattedScoreFrom(player2Score);
+            return GetFormattedScoreFrom(_player1Score) +"-"+GetFormattedScoreFrom(_player2Score);
         }
 
         private static string GetFormattedScoreFrom(int playerScore)
