@@ -21,129 +21,52 @@ namespace Tennis
         {
             var score = "";
             if (IsADeuce()) return "Deuce";
+            if (Player1HasWon()) return "Win for player1";
+            if (Player2HasWon()) return "Win for player2";
+            if (Player1IsOnAdvantage()) return "Advantage player1";
+            if (Player2IsOnAdvantage()) return "Advantage player2";
             score = GetCurrentScore(score);
-            score = GetAdvantageScore(score);
-            score = GetPlayerVictoryScore(score);
             return score;
         }
 
         private string GetCurrentScore(string score)
         {
             var points = new[] { "Love", "Fifteen", "Thirty", "Forty" };
+            
             if (_player1Point == _player2Point && _player1Point < 3)
             {
-                score = points[_player1Point];
-                score += "-All";
+                return points[_player1Point] + "-All";
             }
-
-            if (_player1Point > 0 && _player2Point == 0)
-            {
-                _player1Result = _player1Point switch
-                {
-                    1 => "Fifteen",
-                    2 => "Thirty",
-                    3 => "Forty",
-                    _ => _player1Result
-                };
-
-                _player2Result = "Love";
-                score = _player1Result + "-" + _player2Result;
-            }
-
-            if (_player2Point > 0 && _player1Point == 0)
-            {
-                _player2Result = _player2Point switch
-                {
-                    1 => "Fifteen",
-                    2 => "Thirty",
-                    3 => "Forty",
-                    _ => _player2Result
-                };
-
-                _player1Result = "Love";
-                score = _player1Result + "-" + _player2Result;
-            }
-
-            if (_player1Point > _player2Point && _player1Point < 4)
-            {
-                _player1Result = _player1Point switch
-                {
-                    2 => "Thirty",
-                    3 => "Forty",
-                    _ => _player1Result
-                };
-                _player2Result = _player2Point switch
-                {
-                    1 => "Fifteen",
-                    2 => "Thirty",
-                    _ => _player2Result
-                };
-                score = _player1Result + "-" + _player2Result;
-            }
-
-            if (_player2Point <= _player1Point || _player2Point >= 4) return score;
-            _player2Result = _player2Point switch
-            {
-                2 => "Thirty",
-                3 => "Forty",
-                _ => _player2Result
-            };
-            _player1Result = _player1Point switch
-            {
-                1 => "Fifteen",
-                2 => "Thirty",
-                _ => _player1Result
-            };
+            
+            _player1Result = points[_player1Point];
+            _player2Result = points[_player2Point];
             score = _player1Result + "-" + _player2Result;
-
             return score;
         }
 
-        private string GetPlayerVictoryScore(string score)
+        private bool Player2HasWon()
         {
-            if (_player1Point >= 4 && _player2Point >= 0 && (_player1Point - _player2Point) >= 2)
-            {
-                score = "Win for player1";
-            }
-            if (_player2Point >= 4 && _player1Point >= 0 && (_player2Point - _player1Point) >= 2)
-            {
-                score = "Win for player2";
-            }
-            return score;
+            return _player2Point >= 4 && _player1Point >= 0 && (_player2Point - _player1Point) >= 2;
         }
 
-        private string GetAdvantageScore(string score)
+        private bool Player1HasWon()
         {
-            if (_player1Point > _player2Point && _player2Point >= 3)
-            {
-                score = "Advantage player1";
-            }
-            if (_player2Point > _player1Point && _player1Point >= 3)
-            {
-                score = "Advantage player2";
-            }
-            return score;
+            return _player1Point >= 4 && _player2Point >= 0 && (_player1Point - _player2Point) >= 2;
+        }
+
+        private bool Player2IsOnAdvantage()
+        {
+            return _player2Point > _player1Point && _player1Point >= 3;
+        }
+
+        private bool Player1IsOnAdvantage()
+        {
+            return _player1Point > _player2Point && _player2Point >= 3;
         }
 
         private bool IsADeuce()
         {
             return _player1Point == _player2Point && _player1Point > 2;
-        }
-
-        public void SetP1Score(int number)
-        {
-            for (int i = 0; i < number; i++)
-            {
-                P1Score();
-            }
-        }
-
-        public void SetP2Score(int number)
-        {
-            for (var i = 0; i < number; i++)
-            {
-                P2Score();
-            }
         }
 
         private void P1Score()
