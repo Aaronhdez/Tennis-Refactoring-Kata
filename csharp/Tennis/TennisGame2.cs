@@ -19,25 +19,22 @@ namespace Tennis
 
         public string GetScore()
         {
-            var score = "";
-            if (IsADeuce()) return "Deuce";
-            if (Player1HasWon()) return "Win for player1";
-            if (Player2HasWon()) return "Win for player2";
-            if (Player1IsOnAdvantage()) return "Advantage player1";
-            if (Player2IsOnAdvantage()) return "Advantage player2";
-            score = GetCurrentScore(score);
-            return score;
+            return IsADeuce() ? "Deuce" :
+                Player1HasWon() ? "Win for player1" :
+                Player2HasWon() ? "Win for player2" :
+                Player1IsOnAdvantage() ? "Advantage player1" :
+                Player2IsOnAdvantage() ? "Advantage player2" : GetCurrentScore(string.Empty);
         }
 
         private string GetCurrentScore(string score)
         {
             var points = new[] { "Love", "Fifteen", "Thirty", "Forty" };
-            
+
             if (_player1Point == _player2Point && _player1Point < 3)
             {
                 return points[_player1Point] + "-All";
             }
-            
+
             _player1Result = points[_player1Point];
             _player2Result = points[_player2Point];
             score = _player1Result + "-" + _player2Result;
@@ -86,7 +83,5 @@ namespace Tennis
             else
                 P2Score();
         }
-
     }
 }
-
