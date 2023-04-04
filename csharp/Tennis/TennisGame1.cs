@@ -40,15 +40,13 @@ namespace Tennis
 
         private string SetLoveScore()
         {
-            string score;
-            score = m_score1 switch
+            return m_score1 switch
             {
                 0 => "Love-All",
                 1 => "Fifteen-All",
                 2 => "Thirty-All",
                 _ => "Deuce"
             };
-            return score;
         }
 
         private bool MatchIsInAdvantagePhase()
@@ -58,16 +56,14 @@ namespace Tennis
 
         private string SetAdvantageScore()
         {
-            string score;
             var minusResult = m_score1 - m_score2;
-            score = minusResult switch
+            return minusResult switch
             {
                 1 => "Advantage player1",
                 -1 => "Advantage player2",
                 >= 2 => "Win for player1",
                 _ => "Win for player2"
             };
-            return score;
         }
 
         private string SetNormalScore(string score)
