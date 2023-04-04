@@ -9,6 +9,7 @@ namespace Tennis
         private string _player2Result = "";
         private string _player1Name;
         private string _player2Name;
+        private string[] _points = new[] { "Love", "Fifteen", "Thirty", "Forty" };
 
         public TennisGame2(string player1Name, string player2Name)
         {
@@ -23,22 +24,22 @@ namespace Tennis
                 Player1HasWon() ? "Win for player1" :
                 Player2HasWon() ? "Win for player2" :
                 Player1IsOnAdvantage() ? "Advantage player1" :
-                Player2IsOnAdvantage() ? "Advantage player2" : GetCurrentScore(string.Empty);
+                Player2IsOnAdvantage() ? "Advantage player2" : 
+                IsADraw() ? _points[_player1Point] + "-All" :
+                GetCurrentScore(string.Empty);
         }
 
         private string GetCurrentScore(string score)
         {
-            var points = new[] { "Love", "Fifteen", "Thirty", "Forty" };
-
-            if (_player1Point == _player2Point && _player1Point < 3)
-            {
-                return points[_player1Point] + "-All";
-            }
-
-            _player1Result = points[_player1Point];
-            _player2Result = points[_player2Point];
+            _player1Result = _points[_player1Point];
+            _player2Result = _points[_player2Point];
             score = _player1Result + "-" + _player2Result;
             return score;
+        }
+
+        private bool IsADraw()
+        {
+            return _player1Point == _player2Point && _player1Point < 3;
         }
 
         private bool Player2HasWon()
