@@ -28,10 +28,9 @@ namespace Tennis
 
         public string GetScore()
         {
-            var score = "";
-            if (BothPlayersAreDraw()) return SetLoveScore();
-            if (MatchIsInAdvantagePhase()) return SetAdvantageScore();
-            return SetNormalScore(score);
+            return BothPlayersAreDraw() ? SetLoveScore() :
+                MatchIsInAdvantagePhase() ? SetAdvantageScore() : 
+                SetNormalScore(string.Empty);
         }
 
         private bool BothPlayersAreDraw()
