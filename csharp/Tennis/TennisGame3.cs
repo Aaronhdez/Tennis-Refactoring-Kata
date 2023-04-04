@@ -6,6 +6,7 @@ namespace Tennis
         private int _player1Score;
         private readonly string _player1Name;
         private readonly string _player2Name;
+        private readonly string[] _points = { "Love", "Fifteen", "Thirty", "Forty" };
 
         public TennisGame3(string player1Name, string player2Name)
         {
@@ -15,20 +16,25 @@ namespace Tennis
 
         public string GetScore()
         {
-            string score;
-            if (_player1Score < 4 && _player2Score < 4 && (_player1Score + _player2Score < 6))
-            {
-                string[] points = { "Love", "Fifteen", "Thirty", "Forty" };
-                score = points[_player1Score];
-                return IsADraw() ? score + "-All" : score + "-" + points[_player2Score];
-            }
-
             if (IsADraw())
                 return "Deuce";
+            string score;
+            if (MatchIsStillPlaying())
+            {
+                score = _points[_player1Score];
+                return IsADraw() ? 
+                    score + "-All" : 
+                    score + "-" + _points[_player2Score];
+            }
             score = _player1Score > _player2Score ? _player1Name : _player2Name;
             return MatchIsOnAdvantage() ? 
                 "Advantage " + score : 
                 "Win for " + score;
+        }
+
+        private bool MatchIsStillPlaying()
+        {
+            return _player1Score < 4 && _player2Score < 4 && _player1Score + _player2Score < 6;
         }
 
         private bool MatchIsOnAdvantage()
