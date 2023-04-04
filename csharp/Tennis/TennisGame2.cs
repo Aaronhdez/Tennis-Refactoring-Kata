@@ -20,6 +20,8 @@ namespace Tennis
         public string GetScore()
         {
             var score = "";
+            if (IsADeuce())
+                return "Deuce";
             if (_player1Point == _player2Point && _player1Point < 3)
             {
                 if (_player1Point == 0)
@@ -30,8 +32,6 @@ namespace Tennis
                     score = "Thirty";
                 score += "-All";
             }
-            if (_player1Point == _player2Point && _player1Point > 2)
-                score = "Deuce";
 
             if (_player1Point > 0 && _player2Point == 0)
             {
@@ -102,6 +102,11 @@ namespace Tennis
                 score = "Win for player2";
             }
             return score;
+        }
+
+        private bool IsADeuce()
+        {
+            return _player1Point == _player2Point && _player1Point > 2;
         }
 
         public void SetP1Score(int number)
