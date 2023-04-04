@@ -56,8 +56,7 @@ namespace Tennis
 
         private string SetAdvantageScore()
         {
-            var minusResult = player1Score - player2Score;
-            return minusResult switch
+            return (player1Score - player2Score) switch
             {
                 1 => "Advantage player1",
                 -1 => "Advantage player2",
@@ -66,22 +65,12 @@ namespace Tennis
             };
         }
 
-        private string SetNormalScore(string score)
-        {
-            for (var i = 1; i < 3; i++)
-            {
-                score = GetCurrentScore();
-            }
-
-            return score;
-        }
-
         private string GetCurrentScore()
         {
-            return GetScoreFrom(player1Score) +"-"+GetScoreFrom(player2Score);
+            return GetFormattedScoreFrom(player1Score) +"-"+GetFormattedScoreFrom(player2Score);
         }
 
-        private static string GetScoreFrom(int playerScore)
+        private static string GetFormattedScoreFrom(int playerScore)
         {
             return playerScore switch
             {
