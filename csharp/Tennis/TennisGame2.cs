@@ -26,15 +26,14 @@ namespace Tennis
                 Player1IsOnAdvantage() ? "Advantage player1" :
                 Player2IsOnAdvantage() ? "Advantage player2" : 
                 IsADraw() ? _points[_player1Point] + "-All" :
-                GetCurrentScore(string.Empty);
+                GetCurrentScore();
         }
 
-        private string GetCurrentScore(string score)
+        private string GetCurrentScore()
         {
             _player1Result = _points[_player1Point];
             _player2Result = _points[_player2Point];
-            score = _player1Result + "-" + _player2Result;
-            return score;
+            return _player1Result + "-" + _player2Result;
         }
 
         private bool IsADraw()
