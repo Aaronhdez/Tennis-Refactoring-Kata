@@ -22,6 +22,7 @@ namespace Tennis
             var score = "";
             if (IsADeuce())
                 return "Deuce";
+            
             if (_player1Point == _player2Point && _player1Point < 3)
             {
                 if (_player1Point == 0)
@@ -83,16 +84,15 @@ namespace Tennis
                 score = _player1Result + "-" + _player2Result;
             }
 
-            if (_player1Point > _player2Point && _player2Point >= 3)
-            {
-                score = "Advantage player1";
-            }
+            score = IsAdvantage(score);
+            score = APlayerHasWon(score);
 
-            if (_player2Point > _player1Point && _player1Point >= 3)
-            {
-                score = "Advantage player2";
-            }
+            
+            return score;
+        }
 
+        private string APlayerHasWon(string score)
+        {
             if (_player1Point >= 4 && _player2Point >= 0 && (_player1Point - _player2Point) >= 2)
             {
                 score = "Win for player1";
@@ -100,6 +100,19 @@ namespace Tennis
             if (_player2Point >= 4 && _player1Point >= 0 && (_player2Point - _player1Point) >= 2)
             {
                 score = "Win for player2";
+            }
+            return score;
+        }
+
+        private string IsAdvantage(string score)
+        {
+            if (_player1Point > _player2Point && _player2Point >= 3)
+            {
+                score = "Advantage player1";
+            }
+            if (_player2Point > _player1Point && _player1Point >= 3)
+            {
+                score = "Advantage player2";
             }
             return score;
         }
