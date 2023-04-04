@@ -14,43 +14,6 @@ namespace Tennis
             _player2Name = player2Name;
         }
 
-        public string GetScore()
-        {
-            return MatchIsStillPlaying() ? CurrentScore() 
-                : IsADraw() ? "Deuce" 
-                : ExtraTimeScore();
-        }
-
-        private bool MatchIsStillPlaying()
-        {
-            return _player1Score < 4 && _player2Score < 4 && _player1Score + _player2Score < 6;
-        }
-
-        private string CurrentScore()
-        {
-            return IsADraw() ? 
-                _points[_player1Score] + "-All" 
-                : _points[_player1Score] + "-" + _points[_player2Score];
-        }
-
-        private bool IsADraw()
-        {
-            return _player1Score == _player2Score;
-        }
-
-        private string ExtraTimeScore()
-        {
-            var score = _player1Score > _player2Score ? _player1Name : _player2Name;
-            return MatchIsOnAdvantage() ? 
-                "Advantage " + score 
-                : "Win for " + score;
-        }
-
-        private bool MatchIsOnAdvantage()
-        {
-            return (_player1Score - _player2Score) * (_player1Score - _player2Score) == 1;
-        }
-
         public void WonPoint(string playerName)
         {
             if (playerName == "player1")
@@ -59,6 +22,31 @@ namespace Tennis
                 _player2Score += 1;
         }
 
+        public string GetScore()
+        {
+            return MatchIsStillPlaying() ? CurrentScore()
+                : IsADraw() ? "Deuce"
+                : ExtraTimeScore();
+        }
+
+        private bool MatchIsStillPlaying() =>
+            _player1Score < 4 && _player2Score < 4 && _player1Score + _player2Score < 6;
+
+        private string CurrentScore() =>
+            IsADraw()
+                ? _points[_player1Score] + "-All"
+                : _points[_player1Score] + "-" + _points[_player2Score];
+
+        private bool IsADraw() => _player1Score == _player2Score;
+
+        private string ExtraTimeScore()
+        {
+            var score = _player1Score > _player2Score ? _player1Name : _player2Name;
+            return MatchIsOnAdvantage()
+                ? "Advantage " + score
+                : "Win for " + score;
+        }
+
+        private bool MatchIsOnAdvantage() => (_player1Score - _player2Score) * (_player1Score - _player2Score) == 1;
     }
 }
-
