@@ -20,40 +20,50 @@ namespace Tennis
         public string GetScore()
         {
             var score = "";
-            if (IsADeuce())
-                return "Deuce";
-            
+            if (IsADeuce()) return "Deuce";
+            score = GetCurrentScore(score);
+            score = GetAdvantageScore(score);
+            score = GetPlayerVictoryScore(score);
+            return score;
+        }
+
+        private string GetCurrentScore(string score)
+        {
             if (_player1Point == _player2Point && _player1Point < 3)
             {
-                if (_player1Point == 0)
-                    score = "Love";
-                if (_player1Point == 1)
-                    score = "Fifteen";
-                if (_player1Point == 2)
-                    score = "Thirty";
+                score = _player1Point switch
+                {
+                    0 => "Love",
+                    1 => "Fifteen",
+                    2 => "Thirty",
+                    _ => score
+                };
                 score += "-All";
             }
 
             if (_player1Point > 0 && _player2Point == 0)
             {
-                if (_player1Point == 1)
-                    _player1Result = "Fifteen";
-                if (_player1Point == 2)
-                    _player1Result = "Thirty";
-                if (_player1Point == 3)
-                    _player1Result = "Forty";
+                _player1Result = _player1Point switch
+                {
+                    1 => "Fifteen",
+                    2 => "Thirty",
+                    3 => "Forty",
+                    _ => _player1Result
+                };
 
                 _player2Result = "Love";
                 score = _player1Result + "-" + _player2Result;
             }
+
             if (_player2Point > 0 && _player1Point == 0)
             {
-                if (_player2Point == 1)
-                    _player2Result = "Fifteen";
-                if (_player2Point == 2)
-                    _player2Result = "Thirty";
-                if (_player2Point == 3)
-                    _player2Result = "Forty";
+                _player2Result = _player2Point switch
+                {
+                    1 => "Fifteen",
+                    2 => "Thirty",
+                    3 => "Forty",
+                    _ => _player2Result
+                };
 
                 _player1Result = "Love";
                 score = _player1Result + "-" + _player2Result;
@@ -61,37 +71,40 @@ namespace Tennis
 
             if (_player1Point > _player2Point && _player1Point < 4)
             {
-                if (_player1Point == 2)
-                    _player1Result = "Thirty";
-                if (_player1Point == 3)
-                    _player1Result = "Forty";
-                if (_player2Point == 1)
-                    _player2Result = "Fifteen";
-                if (_player2Point == 2)
-                    _player2Result = "Thirty";
+                _player1Result = _player1Point switch
+                {
+                    2 => "Thirty",
+                    3 => "Forty",
+                    _ => _player1Result
+                };
+                _player2Result = _player2Point switch
+                {
+                    1 => "Fifteen",
+                    2 => "Thirty",
+                    _ => _player2Result
+                };
                 score = _player1Result + "-" + _player2Result;
             }
-            if (_player2Point > _player1Point && _player2Point < 4)
+
+            if (_player2Point <= _player1Point || _player2Point >= 4) return score;
+            _player2Result = _player2Point switch
             {
-                if (_player2Point == 2)
-                    _player2Result = "Thirty";
-                if (_player2Point == 3)
-                    _player2Result = "Forty";
-                if (_player1Point == 1)
-                    _player1Result = "Fifteen";
-                if (_player1Point == 2)
-                    _player1Result = "Thirty";
-                score = _player1Result + "-" + _player2Result;
-            }
+                2 => "Thirty",
+                3 => "Forty",
+                _ => _player2Result
+            };
+            _player1Result = _player1Point switch
+            {
+                1 => "Fifteen",
+                2 => "Thirty",
+                _ => _player1Result
+            };
+            score = _player1Result + "-" + _player2Result;
 
-            score = IsAdvantage(score);
-            score = APlayerHasWon(score);
-
-            
             return score;
         }
 
-        private string APlayerHasWon(string score)
+        private string GetPlayerVictoryScore(string score)
         {
             if (_player1Point >= 4 && _player2Point >= 0 && (_player1Point - _player2Point) >= 2)
             {
@@ -104,7 +117,7 @@ namespace Tennis
             return score;
         }
 
-        private string IsAdvantage(string score)
+        private string GetAdvantageScore(string score)
         {
             if (_player1Point > _player2Point && _player2Point >= 3)
             {
