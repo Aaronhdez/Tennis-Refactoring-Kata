@@ -4,11 +4,10 @@ namespace Tennis
     {
         private int _player1Point;
         private int _player2Point;
-
-        private string _player2Result = "";
-        private string _player1Name;
-        private string _player2Name;
-        private string[] _points = new[] { "Love", "Fifteen", "Thirty", "Forty" };
+        
+        private readonly string _player1Name;
+        private readonly string _player2Name;
+        private readonly string[] _points = { "Love", "Fifteen", "Thirty", "Forty" };
 
         public TennisGame2(string player1Name, string player2Name)
         {
@@ -20,12 +19,37 @@ namespace Tennis
         public string GetScore()
         {
             return IsADeuce() ? "Deuce" :
-                Player1HasWon() ? "Win for player1" :
-                Player2HasWon() ? "Win for player2" :
-                Player1IsOnAdvantage() ? "Advantage player1" :
-                Player2IsOnAdvantage() ? "Advantage player2" : 
+                Player1HasWon() ? $"Win for {_player1Name}" :
+                Player2HasWon() ? $"Win for {_player2Name}" :
+                Player1IsOnAdvantage() ? $"Advantage {_player1Name}" :
+                Player2IsOnAdvantage() ? $"Advantage {_player2Name}" : 
                 IsADraw() ? _points[_player1Point] + "-All" :
                 GetCurrentScore();
+        }
+
+        private bool IsADeuce()
+        {
+            return _player1Point == _player2Point && _player1Point > 2;
+        }
+        
+        private bool Player1HasWon()
+        {
+            return _player1Point >= 4 && _player2Point >= 0 && (_player1Point - _player2Point) >= 2;
+        }
+
+        private bool Player2HasWon()
+        {
+            return _player2Point >= 4 && _player1Point >= 0 && (_player2Point - _player1Point) >= 2;
+        }
+        
+        private bool Player1IsOnAdvantage()
+        {
+            return _player1Point > _player2Point && _player2Point >= 3;
+        }
+        
+        private bool Player2IsOnAdvantage()
+        {
+            return _player2Point > _player1Point && _player1Point >= 3;
         }
 
         private string GetCurrentScore()
@@ -38,47 +62,12 @@ namespace Tennis
             return _player1Point == _player2Point && _player1Point < 3;
         }
 
-        private bool Player2HasWon()
-        {
-            return _player2Point >= 4 && _player1Point >= 0 && (_player2Point - _player1Point) >= 2;
-        }
-
-        private bool Player1HasWon()
-        {
-            return _player1Point >= 4 && _player2Point >= 0 && (_player1Point - _player2Point) >= 2;
-        }
-
-        private bool Player2IsOnAdvantage()
-        {
-            return _player2Point > _player1Point && _player1Point >= 3;
-        }
-
-        private bool Player1IsOnAdvantage()
-        {
-            return _player1Point > _player2Point && _player2Point >= 3;
-        }
-
-        private bool IsADeuce()
-        {
-            return _player1Point == _player2Point && _player1Point > 2;
-        }
-
-        private void P1Score()
-        {
-            _player1Point++;
-        }
-
-        private void P2Score()
-        {
-            _player2Point++;
-        }
-
         public void WonPoint(string player)
         {
-            if (player == "player1")
-                P1Score();
+            if (player ==_player1Name)
+                _player1Point++;
             else
-                P2Score();
+                _player2Point++;
         }
     }
 }
